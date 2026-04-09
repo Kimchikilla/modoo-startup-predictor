@@ -1,0 +1,14 @@
+{
+  "name": "모두의 창업 합격 예측",
+  "short_name": "모두예측",
+  "description": "3,797 공개 아이디어 블라인드 스코어링. AI vs 정부 심사위원 예측 실험.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
