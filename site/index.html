@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모두의 창업 합격 예측 v1</title>
+<meta name="description" content="모두의 창업 5,000명 선발 합격 예측 알고리즘. 3,797 공개 아이디어 블라인드 스코어링.">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif; }
+  .badge-pass { background: #064e3b; color: #6ee7b7; border: 1px solid #047857; }
+  .badge-fail { background: #450a0a; color: #fca5a5; border: 1px solid #991b1b; }
+  .row-hover:hover { background: #1f2937; }
+  .score-bar { height: 4px; background: #374151; border-radius: 2px; overflow: hidden; }
+  .score-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #10b981); }
+</style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+<header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-10">
+  <div class="max-w-7xl mx-auto px-4 py-4">
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <div>
+        <h1 class="text-xl md:text-2xl font-bold">모두의 창업 합격 예측 <span class="text-emerald-400">v1</span></h1>
+        <p class="text-sm text-gray-400 mt-1">한 줄 아이디어 요약만으로 누가 5,000명 안에 들지 예측</p>
+      </div>
+      <div class="text-xs text-gray-500 font-mono">
+        <a href="https://github.com/Kimchikilla/modoo-startup-predictor" class="hover:text-emerald-400" target="_blank">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-6">
+
+  <!-- Stats cards -->
+  <section id="stats" class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
+      <div class="text-xs text-gray-500">공개 풀</div>
+      <div class="text-2xl font-bold mt-1" id="stat-total">—</div>
+    </div>
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
+      <div class="text-xs text-gray-500">TECH</div>
+      <div class="text-2xl font-bold mt-1" id="stat-tech">—</div>
+    </div>
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
+      <div class="text-xs text-gray-500">LOCAL</div>
+      <div class="text-2xl font-bold mt-1" id="stat-local">—</div>
+    </div>
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
+      <div class="text-xs text-gray-500">슬롯</div>
+      <div class="text-2xl font-bold mt-1">5,000</div>
+      <div class="text-[10px] text-gray-500 mt-0.5">TECH 4000 + LOCAL 1000</div>
+    </div>
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4 col-span-2 md:col-span-1">
+      <div class="text-xs text-gray-500">마감</div>
+      <div class="text-2xl font-bold mt-1 text-amber-400">5/15</div>
+    </div>
+  </section>
+
+  <!-- Methodology (collapsible) -->
+  <section class="bg-gray-900 border border-gray-800 rounded-lg mb-4 overflow-hidden">
+    <button onclick="toggleMethod()" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-800/50 transition">
+      <div class="flex items-center gap-2">
+        <span class="text-emerald-400">📋</span>
+        <span class="font-semibold">심사 기준 · 통과 산출 방식</span>
+      </div>
+      <span id="method-arrow" class="text-gray-500 transition-transform">▼</span>
+    </button>
+    <div id="method-body" class="hidden px-4 pb-4 pt-2 border-t border-gray-800 space-y-4 text-sm">
+
+      <div>
+        <h3 class="font-bold text-emerald-400 mb-2">🅰 LOCAL 부문 심사 기준 (모두의 창업 공식)</h3>
+        <p class="text-gray-400 text-xs mb-2">경영 전문가·현직 투자자로 구성된 책임멘토단이 다음 3축을 종합 평가:</p>
+        <div class="grid md:grid-cols-3 gap-2">
+          <div class="bg-gray-800 rounded p-3">
+            <div class="text-xs text-gray-500">s1</div>
+            <div class="font-bold">차별성</div>
+            <div class="text-xs text-gray-400 mt-1">기존 서비스·제품과 무엇이 다른가?</div>
+          </div>
+          <div class="bg-gray-800 rounded p-3 border border-emerald-800/50">
+            <div class="text-xs text-gray-500">s2 ★ 핵심</div>
+            <div class="font-bold">지역가치</div>
+            <div class="text-xs text-gray-400 mt-1">지역 자원·특색을 어떻게 활용하는가?</div>
+          </div>
+          <div class="bg-gray-800 rounded p-3">
+            <div class="text-xs text-gray-500">s3</div>
+            <div class="font-bold">성장 가능성</div>
+            <div class="text-xs text-gray-400 mt-1">지역에 뿌리 내리고 더 큰 시장으로 뻗을 수 있나?</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-amber-400 mb-2">🅱 TECH 부문 심사 기준 (정부 표준 추정)</h3>
+        <p class="text-gray-400 text-xs mb-2">공식 기준 미공개 → 한국 정부 창업지원사업(예비창업패키지·초기창업패키지·팁스) 표준 기준 추정 적용:</p>
+        <div class="grid md:grid-cols-3 gap-2">
+          <div class="bg-gray-800 rounded p-3">
+            <div class="text-xs text-gray-500">s1</div>
+            <div class="font-bold">차별성·혁신성</div>
+            <div class="text-xs text-gray-400 mt-1">기존 대비 기술 차별점 (단순 GPT wrapper는 감점)</div>
+          </div>
+          <div class="bg-gray-800 rounded p-3">
+            <div class="text-xs text-gray-500">s2</div>
+            <div class="font-bold">사업성·시장성</div>
+            <div class="text-xs text-gray-400 mt-1">명확한 고객·수익모델·TAM이 있는가?</div>
+          </div>
+          <div class="bg-gray-800 rounded p-3">
+            <div class="text-xs text-gray-500">s3</div>
+            <div class="font-bold">성장 가능성</div>
+            <div class="text-xs text-gray-400 mt-1">확장성·SaaS 단위경제·글로벌 잠재력</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-blue-400 mb-2">🎯 통과 예측 산출 방식</h3>
+        <ol class="list-decimal ml-5 space-y-1 text-gray-300">
+          <li><b>블라인딩</b>: 닉네임·좋아요·등록 시각·분야 태그 모두 제거. id + 한 줄 요약만 LLM에 노출. <span class="text-gray-500 text-xs">(검증: 좋아요-점수 상관 r ≈ 0.04, 거의 0)</span></li>
+          <li><b>3축 스코어링</b>: 각 축 1-10 정수, 평균 5-6 캘리브레이션. 10개 LLM 서브에이전트 병렬 실행.</li>
+          <li><b>합산 + 분야 내 순위</b>: total = s1+s2+s3 (3-30점). 분야(TECH/LOCAL) 내에서만 순위 매김.</li>
+          <li><b>시나리오 컷오프</b>: 분야별 가정한 통과율(예: TECH 50%) → 상위 N명을 통과 예측.
+            <ul class="list-disc ml-5 mt-1 text-gray-400 text-xs">
+              <li><b>낙관 (82% / 94%)</b>: 최종 ~6,000명 가정 (현재 추세)</li>
+              <li><b>중도 (50% / 60%)</b>: 최종 ~10,000명 가정</li>
+              <li><b>비관 (30% / 40%)</b>: 최종 ~16,000명 가정 (예비창업패키지 50:1 참고)</li>
+            </ul>
+          </li>
+          <li><b>Lock</b>: 예측 파일 SHA256 해시 기록 → 발표 후 변경 불가능 증명.</li>
+          <li><b>발표 후 평가</b>: Precision/Recall/AUROC/Calibration plot 산출 예정.</li>
+        </ol>
+      </div>
+
+      <div class="bg-amber-950/30 border border-amber-900/50 rounded p-3 text-xs text-amber-200">
+        <b>⚠ 한계</b>: 한 줄 요약만 사용 (심사위원은 본문·팀·영상까지 봄). 단일 스코어링 패스. 비공개 풀(~37%) 보이지 않음. TECH 기준은 추정. 예측 천장이 본질적으로 낮음을 인지.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="bg-gray-900 border border-gray-800 rounded-lg p-4 mb-4">
+    <div class="flex flex-wrap gap-4">
+      <!-- Division -->
+      <div>
+        <div class="text-xs text-gray-500 mb-1">분야</div>
+        <div class="inline-flex rounded-md overflow-hidden border border-gray-700">
+          <button class="div-btn px-4 py-1.5 text-sm bg-emerald-700 text-white" data-div="TECH">TECH</button>
+          <button class="div-btn px-4 py-1.5 text-sm bg-gray-800 text-gray-300 hover:bg-gray-700" data-div="LOCAL">LOCAL</button>
+        </div>
+      </div>
+
+      <!-- Scenario -->
+      <div>
+        <div class="text-xs text-gray-500 mb-1">통과율 시나리오</div>
+        <div class="inline-flex rounded-md overflow-hidden border border-gray-700">
+          <button class="sc-btn px-3 py-1.5 text-sm bg-gray-800 hover:bg-gray-700" data-sc="opt">낙관</button>
+          <button class="sc-btn px-3 py-1.5 text-sm bg-emerald-700 text-white" data-sc="mid">중도</button>
+          <button class="sc-btn px-3 py-1.5 text-sm bg-gray-800 hover:bg-gray-700" data-sc="pes">비관</button>
+        </div>
+        <div class="text-[10px] text-gray-500 mt-1" id="sc-desc"></div>
+      </div>
+
+      <!-- Pred filter -->
+      <div>
+        <div class="text-xs text-gray-500 mb-1">예측</div>
+        <div class="inline-flex rounded-md overflow-hidden border border-gray-700">
+          <button class="pf-btn px-3 py-1.5 text-sm bg-emerald-700 text-white" data-pf="all">전체</button>
+          <button class="pf-btn px-3 py-1.5 text-sm bg-gray-800 hover:bg-gray-700" data-pf="pass">통과</button>
+          <button class="pf-btn px-3 py-1.5 text-sm bg-gray-800 hover:bg-gray-700" data-pf="fail">탈락</button>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="flex-1 min-w-[200px]">
+        <div class="text-xs text-gray-500 mb-1">검색 (아이디어 본문)</div>
+        <input id="search" type="text" placeholder="키워드 입력..." class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
+      </div>
+    </div>
+  </section>
+
+  <!-- Result summary -->
+  <div class="text-sm text-gray-400 mb-3" id="result-summary">로딩 중...</div>
+
+  <!-- Table -->
+  <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-800/50 text-gray-400 text-xs uppercase">
+          <tr>
+            <th class="text-left px-3 py-2 w-16">순위</th>
+            <th class="text-left px-3 py-2 w-14">점수</th>
+            <th class="text-left px-3 py-2 w-32">3축</th>
+            <th class="text-left px-3 py-2">아이디어</th>
+            <th class="text-center px-3 py-2 w-20">예측</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="border-t border-gray-800 px-4 py-3 flex items-center justify-between flex-wrap gap-2">
+      <div class="text-xs text-gray-500" id="page-info">—</div>
+      <div class="flex items-center gap-1" id="pagination"></div>
+    </div>
+  </div>
+
+  <footer class="mt-8 text-xs text-gray-500 text-center space-y-1">
+    <div>v1 lock: <span id="locked-at" class="font-mono"></span> · SHA256: <span id="sha256" class="font-mono"></span></div>
+    <div>블라인딩 검증: 좋아요-점수 상관계수 TECH 0.036 / LOCAL 0.049</div>
+    <div>스코어링: 10개 LLM 서브에이전트 병렬 · 분야별 3축 1-10점 · 발표 후 정확도 측정 예정</div>
+    <div class="text-gray-600 mt-2">⚠️ 한 줄 요약만 사용. 실제 심사위원은 본문·팀·영상까지 봄. 예측 천장이 낮음을 인지.</div>
+  </footer>
+
+</main>
+
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 bg-black/70 z-20 hidden items-center justify-center p-4">
+  <div class="bg-gray-900 border border-gray-700 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+    <div class="p-5">
+      <div class="flex items-start justify-between gap-4 mb-3">
+        <div>
+          <div class="text-xs text-gray-500" id="m-id"></div>
+          <div class="text-lg font-bold mt-1" id="m-su"></div>
+        </div>
+        <button onclick="document.getElementById('modal').classList.add('hidden')" class="text-gray-500 hover:text-white text-xl">×</button>
+      </div>
+      <div class="grid grid-cols-3 gap-3 mb-4">
+        <div class="bg-gray-800 rounded p-3"><div class="text-[10px] text-gray-500">차별성/혁신성</div><div class="text-2xl font-bold mt-1" id="m-s1"></div></div>
+        <div class="bg-gray-800 rounded p-3"><div class="text-[10px] text-gray-500" id="m-s2-label"></div><div class="text-2xl font-bold mt-1" id="m-s2"></div></div>
+        <div class="bg-gray-800 rounded p-3"><div class="text-[10px] text-gray-500">성장 가능성</div><div class="text-2xl font-bold mt-1" id="m-s3"></div></div>
+      </div>
+      <div class="text-xs text-gray-500 mb-1">총점 / 순위</div>
+      <div class="text-base font-bold mb-3" id="m-total"></div>
+      <div class="text-xs text-gray-500 mb-1">스코어링 근거 (LLM)</div>
+      <div class="text-sm bg-gray-800 rounded p-3 mb-3" id="m-rt"></div>
+      <div class="text-xs text-gray-500 mb-1">시나리오별 예측</div>
+      <div id="m-preds" class="text-sm space-y-1"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let DATA = null;
+let state = { div: 'TECH', sc: 'mid', pf: 'all', q: '', page: 1, perPage: 50 };
+
+async function load() {
+  const r = await fetch('data.json');
+  DATA = await r.json();
+  document.getElementById('stat-total').textContent = (DATA.stats.TECH.n + DATA.stats.LOCAL.n).toLocaleString();
+  document.getElementById('stat-tech').textContent = DATA.stats.TECH.n.toLocaleString();
+  document.getElementById('stat-local').textContent = DATA.stats.LOCAL.n.toLocaleString();
+  document.getElementById('locked-at').textContent = DATA.locked_at.split('T')[0];
+  document.getElementById('sha256').textContent = DATA.sha256.slice(0, 16) + '...';
+  updateScDesc();
+  render();
+}
+
+function getPassRate() {
+  const sc = DATA.scenarios.find(x => x.id === state.sc);
+  return state.div === 'TECH' ? sc.tech_pr : sc.local_pr;
+}
+
+function predForRow(row) {
+  const pr = getPassRate();
+  const passCount = Math.round(row.n * pr);
+  return row.rk <= passCount ? 'PASS' : 'FAIL';
+}
+
+function getFiltered() {
+  const q = state.q.trim().toLowerCase();
+  let rows = DATA.rows.filter(r => r.d === state.div);
+  if (q) rows = rows.filter(r => r.su.toLowerCase().includes(q));
+  if (state.pf !== 'all') {
+    rows = rows.filter(r => predForRow(r) === (state.pf === 'pass' ? 'PASS' : 'FAIL'));
+  }
+  return rows;
+}
+
+function render() {
+  const all = getFiltered();
+  const total = all.length;
+  const passN = all.filter(r => predForRow(r) === 'PASS').length;
+  const failN = total - passN;
+
+  const summary = `
+    <span class="text-white font-semibold">${total.toLocaleString()}</span>개 표시 ·
+    <span class="text-emerald-400">${passN.toLocaleString()} 통과</span> ·
+    <span class="text-red-400">${failN.toLocaleString()} 탈락</span>
+    <span class="text-gray-600 ml-2">(${state.div} ${(getPassRate() * 100).toFixed(0)}% 통과율 가정)</span>
+  `;
+  document.getElementById('result-summary').innerHTML = summary;
+
+  const start = (state.page - 1) * state.perPage;
+  const pageRows = all.slice(start, start + state.perPage);
+
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = pageRows.map(r => {
+    const pred = predForRow(r);
+    const badge = pred === 'PASS'
+      ? `<span class="badge-pass text-xs px-2 py-0.5 rounded font-bold">통과</span>`
+      : `<span class="badge-fail text-xs px-2 py-0.5 rounded font-bold">탈락</span>`;
+    const scoresVis = r.s.map(v => {
+      const w = (v / 10) * 100;
+      return `<div class="score-bar"><div class="score-fill" style="width:${w}%"></div></div>`;
+    }).join('');
+    return `
+      <tr class="row-hover border-t border-gray-800 cursor-pointer" onclick='showModal(${r.id})'>
+        <td class="px-3 py-2 text-gray-400 font-mono text-xs">${r.rk}/${r.n}</td>
+        <td class="px-3 py-2 font-bold text-base">${r.t}</td>
+        <td class="px-3 py-2">
+          <div class="flex gap-1 items-center text-[10px] text-gray-500">
+            <span>${r.s[0]}</span><span>${r.s[1]}</span><span>${r.s[2]}</span>
+          </div>
+          <div class="space-y-0.5 mt-1">${scoresVis}</div>
+        </td>
+        <td class="px-3 py-2 text-gray-300">${escapeHtml(r.su.slice(0, 100))}${r.su.length > 100 ? '…' : ''}</td>
+        <td class="px-3 py-2 text-center">${badge}</td>
+      </tr>
+    `;
+  }).join('');
+
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(total / state.perPage));
+  if (state.page > totalPages) state.page = totalPages;
+  document.getElementById('page-info').textContent = `${start + 1}-${Math.min(start + state.perPage, total)} / ${total.toLocaleString()}`;
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+  const c = document.getElementById('pagination');
+  const pages = [];
+  const cur = state.page;
+  const add = (p, label) => pages.push(`<button class="px-2 py-1 text-xs rounded ${p === cur ? 'bg-emerald-700 text-white' : 'bg-gray-800 hover:bg-gray-700 text-gray-400'}" onclick="goPage(${p})">${label || p}</button>`);
+  add(1, '«');
+  add(Math.max(1, cur - 1), '‹');
+  const start = Math.max(1, cur - 2);
+  const end = Math.min(totalPages, cur + 2);
+  for (let p = start; p <= end; p++) add(p);
+  add(Math.min(totalPages, cur + 1), '›');
+  add(totalPages, '»');
+  c.innerHTML = pages.join('');
+}
+
+function goPage(p) { state.page = p; render(); window.scrollTo({top: document.querySelector('#result-summary').offsetTop - 80, behavior:'smooth'}); }
+
+function toggleMethod() {
+  const body = document.getElementById('method-body');
+  const arrow = document.getElementById('method-arrow');
+  const hidden = body.classList.toggle('hidden');
+  arrow.style.transform = hidden ? '' : 'rotate(180deg)';
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function updateScDesc() {
+  const sc = DATA.scenarios.find(x => x.id === state.sc);
+  document.getElementById('sc-desc').textContent = sc.desc;
+}
+
+function showModal(id) {
+  const r = DATA.rows.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('m-id').textContent = `#${r.id} · ${r.d}`;
+  document.getElementById('m-su').textContent = r.su;
+  document.getElementById('m-s1').textContent = r.s[0];
+  document.getElementById('m-s2').textContent = r.s[1];
+  document.getElementById('m-s3').textContent = r.s[2];
+  document.getElementById('m-s2-label').textContent = r.d === 'LOCAL' ? '지역가치' : '사업성/시장성';
+  document.getElementById('m-total').textContent = `${r.t}/30 · ${r.rk}위 / ${r.n}명 (상위 ${((1 - (r.rk - 1) / r.n) * 100).toFixed(1)}%)`;
+  document.getElementById('m-rt').textContent = r.rt || '(rationale 없음)';
+  const preds = DATA.scenarios.map(sc => {
+    const pr = r.d === 'TECH' ? sc.tech_pr : sc.local_pr;
+    const cut = Math.round(r.n * pr);
+    const pred = r.rk <= cut ? '<span class="text-emerald-400 font-bold">통과</span>' : '<span class="text-red-400 font-bold">탈락</span>';
+    return `<div class="flex justify-between bg-gray-800 rounded px-3 py-1.5"><span class="text-gray-400">${sc.name}</span>${pred}</div>`;
+  }).join('');
+  document.getElementById('m-preds').innerHTML = preds;
+  const modal = document.getElementById('modal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') { e.target.classList.add('hidden'); e.target.classList.remove('flex'); }
+});
+
+document.querySelectorAll('.div-btn').forEach(b => b.onclick = () => {
+  state.div = b.dataset.div; state.page = 1;
+  document.querySelectorAll('.div-btn').forEach(x => { x.classList.remove('bg-emerald-700', 'text-white'); x.classList.add('bg-gray-800', 'text-gray-300'); });
+  b.classList.add('bg-emerald-700', 'text-white'); b.classList.remove('bg-gray-800', 'text-gray-300');
+  render();
+});
+document.querySelectorAll('.sc-btn').forEach(b => b.onclick = () => {
+  state.sc = b.dataset.sc; state.page = 1;
+  document.querySelectorAll('.sc-btn').forEach(x => { x.classList.remove('bg-emerald-700', 'text-white'); x.classList.add('bg-gray-800'); });
+  b.classList.add('bg-emerald-700', 'text-white'); b.classList.remove('bg-gray-800');
+  updateScDesc(); render();
+});
+document.querySelectorAll('.pf-btn').forEach(b => b.onclick = () => {
+  state.pf = b.dataset.pf; state.page = 1;
+  document.querySelectorAll('.pf-btn').forEach(x => { x.classList.remove('bg-emerald-700', 'text-white'); x.classList.add('bg-gray-800'); });
+  b.classList.add('bg-emerald-700', 'text-white'); b.classList.remove('bg-gray-800');
+  render();
+});
+document.getElementById('search').addEventListener('input', e => { state.q = e.target.value; state.page = 1; render(); });
+
+load();
+</script>
+</body>
+</html>
