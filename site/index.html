@@ -4,7 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>모두의 창업 합격 예측 v1</title>
-<meta name="description" content="모두의 창업 5,000명 선발 합격 예측 알고리즘. 3,797 공개 아이디어 블라인드 스코어링.">
+<meta name="description" content="모두의 창업 5,000명 선발 합격 예측 알고리즘. 3,797 공개 아이디어 블라인드 스코어링. 본인 아이디어 검색 가능.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://modoo-startup-predictor.pages.dev/">
+<meta property="og:title" content="모두의 창업 합격 예측 — AI vs 정부 심사위원">
+<meta property="og:description" content="3,797개 공개 아이디어를 블라인드 스코어링해서 누가 5,000명 안에 들지 미리 예측. 발표 전 SHA256으로 잠금. 본인 아이디어도 검색 가능.">
+<meta property="og:image" content="https://modoo-startup-predictor.pages.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="모두의 창업 합격 예측 — AI vs 정부 심사위원">
+<meta name="twitter:description" content="3,797개 공개 아이디어 블라인드 스코어링. 발표 전 SHA256 lock. 본인 아이디어 검색 가능.">
+<meta name="twitter:image" content="https://modoo-startup-predictor.pages.dev/og.png">
+
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif; }
@@ -24,14 +41,29 @@
         <h1 class="text-xl md:text-2xl font-bold">모두의 창업 합격 예측 <span class="text-emerald-400">v1</span></h1>
         <p class="text-sm text-gray-400 mt-1">한 줄 아이디어 요약만으로 누가 5,000명 안에 들지 예측</p>
       </div>
-      <div class="text-xs text-gray-500 font-mono">
-        <a href="https://github.com/Kimchikilla/modoo-startup-predictor" class="hover:text-emerald-400" target="_blank">GitHub ↗</a>
+      <div class="text-right">
+        <div class="text-xs text-gray-500">마감까지</div>
+        <div class="text-xl font-bold text-amber-400" id="dday">D-—</div>
+        <a href="https://github.com/Kimchikilla/modoo-startup-predictor" class="text-xs text-gray-500 hover:text-emerald-400 font-mono" target="_blank">GitHub ↗</a>
       </div>
     </div>
   </div>
 </header>
 
 <main class="max-w-7xl mx-auto px-4 py-6">
+
+  <!-- Hero search -->
+  <section class="bg-gradient-to-br from-emerald-900/30 to-gray-900 border border-emerald-800/50 rounded-xl p-6 mb-6">
+    <div class="text-center mb-4">
+      <h2 class="text-2xl md:text-3xl font-bold mb-1">본인 아이디어, 통과일까 탈락일까?</h2>
+      <p class="text-sm text-gray-400">아이디어 ID 또는 제목 키워드로 검색하세요</p>
+    </div>
+    <div class="max-w-2xl mx-auto flex gap-2">
+      <input id="hero-search" type="text" placeholder="예: 13063  또는  AI 플랫폼" class="flex-1 bg-gray-900 border-2 border-gray-700 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-emerald-500">
+      <button id="hero-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 rounded-lg">검색</button>
+    </div>
+    <div id="hero-result" class="max-w-2xl mx-auto mt-3 text-sm"></div>
+  </section>
 
   <!-- Stats cards -->
   <section id="stats" class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
@@ -234,7 +266,12 @@
       <div class="text-xs text-gray-500 mb-1">스코어링 근거 (LLM)</div>
       <div class="text-sm bg-gray-800 rounded p-3 mb-3" id="m-rt"></div>
       <div class="text-xs text-gray-500 mb-1">시나리오별 예측</div>
-      <div id="m-preds" class="text-sm space-y-1"></div>
+      <div id="m-preds" class="text-sm space-y-1 mb-4"></div>
+      <div class="flex gap-2 pt-3 border-t border-gray-800">
+        <button onclick="copyShare()" class="flex-1 bg-emerald-700 hover:bg-emerald-600 text-white text-sm font-bold py-2 rounded">📋 결과 공유 텍스트 복사</button>
+        <a id="m-tweet" target="_blank" class="bg-gray-800 hover:bg-gray-700 text-sm py-2 px-4 rounded text-center">𝕏 트윗</a>
+      </div>
+      <div id="m-copied" class="text-xs text-emerald-400 mt-2 hidden text-center">복사 완료</div>
     </div>
   </div>
 </div>
@@ -242,8 +279,18 @@
 <script>
 let DATA = null;
 let state = { div: 'TECH', sc: 'mid', pf: 'all', q: '', page: 1, perPage: 50 };
+let CURRENT_MODAL = null;
+
+function updateDDay() {
+  const deadline = new Date('2026-05-15T23:59:59+09:00');
+  const now = new Date();
+  const days = Math.ceil((deadline - now) / 86400000);
+  document.getElementById('dday').textContent = days >= 0 ? `D-${days}` : '마감';
+}
 
 async function load() {
+  updateDDay();
+  setInterval(updateDDay, 60000);
   const r = await fetch('data.json');
   DATA = await r.json();
   document.getElementById('stat-total').textContent = (DATA.stats.TECH.n + DATA.stats.LOCAL.n).toLocaleString();
@@ -253,6 +300,56 @@ async function load() {
   document.getElementById('sha256').textContent = DATA.sha256.slice(0, 16) + '...';
   updateScDesc();
   render();
+}
+
+function heroSearch() {
+  const q = document.getElementById('hero-search').value.trim();
+  if (!q) return;
+  const result = document.getElementById('hero-result');
+  // ID lookup first
+  if (/^\d+$/.test(q)) {
+    const found = DATA.rows.find(r => r.id === parseInt(q));
+    if (found) {
+      result.innerHTML = `<div class="bg-gray-900 border border-emerald-700 rounded p-3 cursor-pointer" onclick='showModal(${found.id})'>
+        <div class="text-xs text-gray-500">#${found.id} · ${found.d}</div>
+        <div class="text-white mt-1">${escapeHtml(found.su.slice(0, 120))}${found.su.length > 120 ? '…' : ''}</div>
+        <div class="text-xs text-emerald-400 mt-2">총점 ${found.t}/30 · ${found.rk}위/${found.n} · 클릭하여 상세보기</div>
+      </div>`;
+      return;
+    }
+    result.innerHTML = `<div class="text-red-400 text-center">ID ${q} 를 찾을 수 없습니다</div>`;
+    return;
+  }
+  // Keyword: filter table view
+  state.q = q;
+  state.page = 1;
+  document.getElementById('search').value = q;
+  render();
+  result.innerHTML = `<div class="text-gray-400 text-center">키워드 "${escapeHtml(q)}"로 아래 표 필터링됨</div>`;
+  document.querySelector('#result-summary').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function copyShare() {
+  if (!CURRENT_MODAL) return;
+  const r = CURRENT_MODAL;
+  const sc = DATA.scenarios.find(x => x.id === state.sc);
+  const pr = r.d === 'TECH' ? sc.tech_pr : sc.local_pr;
+  const cut = Math.round(r.n * pr);
+  const pred = r.rk <= cut ? '통과' : '탈락';
+  const pct = ((1 - (r.rk - 1) / r.n) * 100).toFixed(1);
+  const text = `[모두의 창업 AI 예측]
+나의 ${r.d} 아이디어: ${r.su.slice(0, 80)}${r.su.length > 80 ? '...' : ''}
+
+총점: ${r.t}/30 (상위 ${pct}%)
+순위: ${r.rk}위 / ${r.n}명
+${sc.name} 시나리오: ${pred}
+
+▷ 본인 결과 확인: https://modoo-startup-predictor.pages.dev`;
+  navigator.clipboard.writeText(text).then(() => {
+    const c = document.getElementById('m-copied');
+    c.classList.remove('hidden');
+    setTimeout(() => c.classList.add('hidden'), 2000);
+  });
 }
 
 function getPassRate() {
@@ -362,6 +459,15 @@ function updateScDesc() {
 function showModal(id) {
   const r = DATA.rows.find(x => x.id === id);
   if (!r) return;
+  CURRENT_MODAL = r;
+  // Pre-build tweet link
+  const sc = DATA.scenarios.find(x => x.id === state.sc);
+  const pr = r.d === 'TECH' ? sc.tech_pr : sc.local_pr;
+  const cut = Math.round(r.n * pr);
+  const pred = r.rk <= cut ? '통과' : '탈락';
+  const pct = ((1 - (r.rk - 1) / r.n) * 100).toFixed(1);
+  const tweetText = `모두의 창업 AI 예측: 내 아이디어는 "${pred}" (상위 ${pct}%, 총점 ${r.t}/30)\n\n본인 결과 확인 → https://modoo-startup-predictor.pages.dev`;
+  document.getElementById('m-tweet').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
   document.getElementById('m-id').textContent = `#${r.id} · ${r.d}`;
   document.getElementById('m-su').textContent = r.su;
   document.getElementById('m-s1').textContent = r.s[0];
@@ -405,6 +511,8 @@ document.querySelectorAll('.pf-btn').forEach(b => b.onclick = () => {
   render();
 });
 document.getElementById('search').addEventListener('input', e => { state.q = e.target.value; state.page = 1; render(); });
+document.getElementById('hero-btn').addEventListener('click', heroSearch);
+document.getElementById('hero-search').addEventListener('keydown', e => { if (e.key === 'Enter') heroSearch(); });
 
 load();
 </script>
