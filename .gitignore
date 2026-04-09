@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local-only crawl artifacts (regenerable)
+/modoo_ideas_*.csv
+score_input_*.txt
+score_input_NEW_*.txt
+m.txt
+top30.txt
+all_*.txt
+modoo.html
+
+# Sensitive intermediate files at repo root (have nicknames in non-stripped form)
+/scores_merged.csv
+/modoo_ideas.csv
