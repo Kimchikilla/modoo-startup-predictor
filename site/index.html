@@ -41,57 +41,59 @@
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen">
 
-<header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-10">
-  <div class="max-w-7xl mx-auto px-4 py-4">
-    <div class="flex items-center justify-between flex-wrap gap-2">
-      <div>
-        <h1 class="text-xl md:text-2xl font-bold">모두의 창업 합격 예측 <span class="text-emerald-400">v1</span></h1>
-        <p class="text-sm text-gray-400 mt-1">한 줄 아이디어 요약만으로 누가 5,000명 안에 들지 예측</p>
+<header class="border-b border-gray-800 bg-gray-900/80 backdrop-blur md:sticky md:top-0 z-10">
+  <div class="max-w-7xl mx-auto px-4 py-3">
+    <div class="flex items-center justify-between gap-3">
+      <div class="min-w-0 flex-1">
+        <h1 class="text-lg md:text-2xl font-bold truncate">모두의 창업 합격 예측 <span class="text-emerald-400">v1</span></h1>
+        <p class="text-[11px] md:text-sm text-gray-400 mt-0.5 truncate">한 줄 요약만으로 5,000명 합격자 예측</p>
       </div>
-      <div class="text-right">
-        <div class="text-xs text-gray-500">마감까지</div>
-        <div class="text-xl font-bold text-amber-400" id="dday">D-—</div>
-        <a href="https://github.com/Kimchikilla/modoo-startup-predictor" class="text-xs text-gray-500 hover:text-emerald-400 font-mono" target="_blank">GitHub ↗</a>
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="text-right">
+          <div class="text-[9px] md:text-xs text-gray-500 leading-none">마감</div>
+          <div class="text-base md:text-xl font-bold text-amber-400 leading-tight" id="dday">D-—</div>
+        </div>
+        <a href="https://github.com/Kimchikilla/modoo-startup-predictor" class="text-[10px] md:text-xs text-gray-500 hover:text-emerald-400 font-mono" target="_blank">GitHub↗</a>
       </div>
     </div>
   </div>
 </header>
 
-<main class="max-w-7xl mx-auto px-4 py-6">
+<main class="max-w-7xl mx-auto px-4 py-4 md:py-6">
 
-  <!-- Hero search -->
-  <section class="bg-gradient-to-br from-emerald-900/30 to-gray-900 border border-emerald-800/50 rounded-xl p-6 mb-6">
-    <div class="text-center mb-4">
-      <h2 class="text-2xl md:text-3xl font-bold mb-1">본인 아이디어, 통과일까 탈락일까?</h2>
-      <p class="text-sm text-gray-400">아이디어 ID 또는 제목 키워드로 검색하세요</p>
+  <!-- Hero search (compact on mobile) -->
+  <section class="bg-gradient-to-br from-emerald-900/40 to-gray-900 border border-emerald-700/50 rounded-xl p-4 md:p-6 mb-4 md:mb-6">
+    <div class="text-center mb-3">
+      <h2 class="text-lg md:text-3xl font-bold mb-0.5">본인 아이디어, 통과일까 탈락일까?</h2>
+      <p class="text-xs md:text-sm text-gray-400">ID 숫자 또는 키워드로 검색</p>
     </div>
     <div class="max-w-2xl mx-auto flex gap-2">
-      <input id="hero-search" type="text" placeholder="예: 13063  또는  AI 플랫폼" class="flex-1 bg-gray-900 border-2 border-gray-700 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-emerald-500">
-      <button id="hero-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 rounded-lg">검색</button>
+      <input id="hero-search" type="text" placeholder="예: 13063 또는 AI 플랫폼" class="flex-1 min-w-0 bg-gray-900 border-2 border-gray-700 rounded-lg px-3 py-2 md:px-4 md:py-3 text-sm md:text-base focus:outline-none focus:border-emerald-500">
+      <button id="hero-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 md:px-5 rounded-lg text-sm md:text-base shrink-0">검색</button>
     </div>
     <div id="hero-result" class="max-w-2xl mx-auto mt-3 text-sm"></div>
   </section>
 
-  <!-- Stats cards -->
-  <section id="stats" class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
-      <div class="text-xs text-gray-500">공개 풀</div>
-      <div class="text-2xl font-bold mt-1" id="stat-total">—</div>
+  <!-- Stats cards (compact on mobile: single row of 3) -->
+  <section id="stats" class="grid grid-cols-3 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6">
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-2 md:p-4">
+      <div class="text-[10px] md:text-xs text-gray-500">공개 풀</div>
+      <div class="text-lg md:text-2xl font-bold mt-0.5 md:mt-1" id="stat-total">—</div>
     </div>
-    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
-      <div class="text-xs text-gray-500">TECH</div>
-      <div class="text-2xl font-bold mt-1" id="stat-tech">—</div>
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-2 md:p-4">
+      <div class="text-[10px] md:text-xs text-gray-500">TECH</div>
+      <div class="text-lg md:text-2xl font-bold mt-0.5 md:mt-1" id="stat-tech">—</div>
     </div>
-    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
-      <div class="text-xs text-gray-500">LOCAL</div>
-      <div class="text-2xl font-bold mt-1" id="stat-local">—</div>
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-2 md:p-4">
+      <div class="text-[10px] md:text-xs text-gray-500">LOCAL</div>
+      <div class="text-lg md:text-2xl font-bold mt-0.5 md:mt-1" id="stat-local">—</div>
     </div>
-    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
+    <div class="hidden md:block bg-gray-900 border border-gray-800 rounded-lg p-4">
       <div class="text-xs text-gray-500">슬롯</div>
       <div class="text-2xl font-bold mt-1">5,000</div>
       <div class="text-[10px] text-gray-500 mt-0.5">TECH 4000 + LOCAL 1000</div>
     </div>
-    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4 col-span-2 md:col-span-1">
+    <div class="hidden md:block bg-gray-900 border border-gray-800 rounded-lg p-4">
       <div class="text-xs text-gray-500">마감</div>
       <div class="text-2xl font-bold mt-1 text-amber-400">5/15</div>
     </div>
@@ -178,8 +180,8 @@
   </section>
 
   <!-- Filters -->
-  <section class="bg-gray-900 border border-gray-800 rounded-lg p-4 mb-4">
-    <div class="flex flex-wrap gap-4">
+  <section class="bg-gray-900 border border-gray-800 rounded-lg p-3 md:p-4 mb-3 md:mb-4">
+    <div class="flex flex-wrap gap-3 md:gap-4">
       <!-- Division -->
       <div>
         <div class="text-xs text-gray-500 mb-1">분야</div>
@@ -225,13 +227,13 @@
   <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
-        <thead class="bg-gray-800/50 text-gray-400 text-xs uppercase">
+        <thead class="bg-gray-800/50 text-gray-400 text-[10px] md:text-xs uppercase">
           <tr>
-            <th class="text-left px-3 py-2 w-16">순위</th>
-            <th class="text-left px-3 py-2 w-14">점수</th>
-            <th class="text-left px-3 py-2 w-32">3축</th>
-            <th class="text-left px-3 py-2">아이디어</th>
-            <th class="text-center px-3 py-2 w-20">예측</th>
+            <th class="text-left px-2 md:px-3 py-2 w-14">순위</th>
+            <th class="text-left px-2 md:px-3 py-2 w-12">점수</th>
+            <th class="hidden md:table-cell text-left px-3 py-2 w-32">3축</th>
+            <th class="text-left px-2 md:px-3 py-2">아이디어</th>
+            <th class="text-center px-2 md:px-3 py-2 w-16 md:w-20">예측</th>
           </tr>
         </thead>
         <tbody id="tbody"></tbody>
@@ -409,16 +411,16 @@ function render() {
     }).join('');
     return `
       <tr class="row-hover border-t border-gray-800 cursor-pointer" onclick='showModal(${r.id})'>
-        <td class="px-3 py-2 text-gray-400 font-mono text-xs">${r.rk}/${r.n}</td>
-        <td class="px-3 py-2 font-bold text-base">${r.t}</td>
-        <td class="px-3 py-2">
+        <td class="px-2 md:px-3 py-2 text-gray-400 font-mono text-[10px] md:text-xs">${r.rk}/${r.n}</td>
+        <td class="px-2 md:px-3 py-2 font-bold text-sm md:text-base">${r.t}</td>
+        <td class="hidden md:table-cell px-3 py-2">
           <div class="flex gap-1 items-center text-[10px] text-gray-500">
             <span>${r.s[0]}</span><span>${r.s[1]}</span><span>${r.s[2]}</span>
           </div>
           <div class="space-y-0.5 mt-1">${scoresVis}</div>
         </td>
-        <td class="px-3 py-2 text-gray-300">${escapeHtml(r.su.slice(0, 100))}${r.su.length > 100 ? '…' : ''}</td>
-        <td class="px-3 py-2 text-center">${badge}</td>
+        <td class="px-2 md:px-3 py-2 text-gray-300 text-xs md:text-sm">${escapeHtml(r.su.slice(0, 100))}${r.su.length > 100 ? '…' : ''}</td>
+        <td class="px-2 md:px-3 py-2 text-center">${badge}</td>
       </tr>
     `;
   }).join('');
