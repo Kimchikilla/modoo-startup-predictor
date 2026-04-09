@@ -1,22 +1,18 @@
-"""Generate favicon PNGs (32, 180) from a simple design."""
+"""Favicon matching modoo.or.kr palette — blue bg with white 모 character."""
 from PIL import Image, ImageDraw, ImageFont
 
 BLD = "C:/Windows/Fonts/malgunbd.ttf"
 
 def make_icon(size, out):
-    img = Image.new("RGBA", (size * 4, size * 4), (0, 0, 0, 0))  # supersample
-    d = ImageDraw.Draw(img)
     s = size * 4
+    img = Image.new("RGBA", (s, s), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
 
-    # Rounded square bg
+    # Rounded square bg — brand blue
     r = int(s * 0.22)
-    d.rounded_rectangle([0, 0, s, s], radius=r, fill=(11, 18, 32))
+    d.rounded_rectangle([0, 0, s, s], radius=r, fill=(24, 119, 242))
 
-    # Thin border
-    d.rounded_rectangle([int(s * 0.045), int(s * 0.045), s - int(s * 0.045), s - int(s * 0.045)],
-                        radius=int(r * 0.85), outline=(52, 211, 153, 90), width=int(s * 0.012))
-
-    # Big "모" character
+    # Big "모" character in white
     font_size = int(s * 0.66)
     font = ImageFont.truetype(BLD, font_size)
     text = "모"
@@ -25,15 +21,14 @@ def make_icon(size, out):
     th = bbox[3] - bbox[1]
     tx = (s - tw) // 2 - bbox[0]
     ty = (s - th) // 2 - bbox[1] - int(s * 0.03)
-    d.text((tx, ty), text, fill=(52, 211, 153), font=font)
+    d.text((tx, ty), text, fill=(255, 255, 255), font=font)
 
-    # Small emerald dot (top-right accent)
-    dot_r = int(s * 0.08)
-    d.ellipse([s - int(s * 0.2) - dot_r, int(s * 0.14) - dot_r,
-               s - int(s * 0.2) + dot_r, int(s * 0.14) + dot_r],
-              fill=(52, 211, 153))
+    # Coral accent dot (top-right)
+    dot_r = int(s * 0.09)
+    d.ellipse([s - int(s * 0.18) - dot_r, int(s * 0.15) - dot_r,
+               s - int(s * 0.18) + dot_r, int(s * 0.15) + dot_r],
+              fill=(255, 89, 94))
 
-    # Downsample with antialiasing
     img = img.resize((size, size), Image.LANCZOS)
     img.save(out, "PNG", optimize=True)
     print(f"saved {out} ({size}x{size})")

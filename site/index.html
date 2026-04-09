@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#1877f2">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -22,38 +22,79 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ko_KR">
-
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="모두의 창업 합격 예측 — AI vs 정부 심사위원">
 <meta name="twitter:description" content="3,797개 공개 아이디어 블라인드 스코어링. 발표 전 SHA256 lock. 본인 아이디어 검색 가능.">
 <meta name="twitter:image" content="https://modoo-startup-predictor.pages.dev/og.png">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            50:  '#f0f6ff',
+            100: '#e0ecff',
+            200: '#bcd5ff',
+            500: '#1877f2',
+            600: '#1565d8',
+            700: '#0f4fb0',
+          },
+          coral: {
+            100: '#ffe8e9',
+            500: '#ff595e',
+            600: '#e84146',
+          },
+          ink: {
+            900: '#0f1419',
+            700: '#192028',
+            500: '#4b5563',
+            400: '#8e8e93',
+            300: '#b0b3b8',
+            200: '#dee9f5',
+            100: '#f6f7f8',
+          }
+        },
+        fontFamily: {
+          sans: ['Geist', 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
 <style>
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif; }
-  .badge-pass { background: #064e3b; color: #6ee7b7; border: 1px solid #047857; }
-  .badge-fail { background: #450a0a; color: #fca5a5; border: 1px solid #991b1b; }
-  .row-hover:hover { background: #1f2937; }
-  .score-bar { height: 4px; background: #374151; border-radius: 2px; overflow: hidden; }
-  .score-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #10b981); }
+  body { font-family: 'Geist', 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; font-feature-settings: 'ss01','cv11'; }
+  .badge-pass { background: #e0f7e9; color: #166534; border: 1px solid #86efac; }
+  .badge-fail { background: #ffe8e9; color: #991b1b; border: 1px solid #fecaca; }
+  .row-hover:hover { background: #f6f7f8; }
+  .score-bar { height: 4px; background: #e9e9ea; border-radius: 2px; overflow: hidden; }
+  .score-fill { height: 100%; background: linear-gradient(90deg, #fbbf24, #1877f2); }
+  .card-elev { box-shadow: 0 1px 2px rgba(15,20,25,0.04), 0 1px 3px rgba(15,20,25,0.02); }
 </style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen">
+<body class="bg-white text-ink-900 min-h-screen">
 
-<header class="border-b border-gray-800 bg-gray-900/80 backdrop-blur md:sticky md:top-0 z-10">
-  <div class="max-w-7xl mx-auto px-4 py-3">
+<header class="border-b border-ink-200 bg-white/90 backdrop-blur md:sticky md:top-0 z-10">
+  <div class="max-w-7xl mx-auto px-4 py-3 md:py-4">
     <div class="flex items-center justify-between gap-3">
-      <div class="min-w-0 flex-1">
-        <h1 class="text-lg md:text-2xl font-bold truncate">모두의 창업 합격 예측 <span class="text-emerald-400">v1</span></h1>
-        <p class="text-[11px] md:text-sm text-gray-400 mt-0.5 truncate">한 줄 요약만으로 5,000명 합격자 예측</p>
+      <div class="min-w-0 flex-1 flex items-center gap-2">
+        <div class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center font-extrabold text-lg md:text-xl shrink-0">모</div>
+        <div class="min-w-0">
+          <h1 class="text-base md:text-xl font-bold truncate">모두의 창업 합격 예측 <span class="text-brand-500">v1</span></h1>
+          <p class="text-[11px] md:text-sm text-ink-400 mt-0.5 truncate">한 줄 요약만으로 5,000명 합격자 예측</p>
+        </div>
       </div>
       <div class="flex items-center gap-3 shrink-0">
         <div class="text-right">
-          <div class="text-[9px] md:text-xs text-gray-500 leading-none">마감</div>
-          <div class="text-base md:text-xl font-bold text-amber-400 leading-tight" id="dday">D-—</div>
+          <div class="text-[9px] md:text-xs text-ink-400 leading-none">마감</div>
+          <div class="text-base md:text-xl font-bold text-coral-500 leading-tight" id="dday">D-—</div>
         </div>
-        <a href="https://github.com/Kimchikilla/modoo-startup-predictor" class="text-[10px] md:text-xs text-gray-500 hover:text-emerald-400 font-mono" target="_blank">GitHub↗</a>
+        <a href="https://github.com/Kimchikilla/modoo-startup-predictor" class="text-[10px] md:text-xs text-ink-400 hover:text-brand-500 font-mono" target="_blank">GitHub↗</a>
       </div>
     </div>
   </div>
@@ -61,110 +102,111 @@
 
 <main class="max-w-7xl mx-auto px-4 py-4 md:py-6">
 
-  <!-- Hero search (compact on mobile) -->
-  <section class="bg-gradient-to-br from-emerald-900/40 to-gray-900 border border-emerald-700/50 rounded-xl p-4 md:p-6 mb-4 md:mb-6">
-    <div class="text-center mb-3">
-      <h2 class="text-lg md:text-3xl font-bold mb-0.5">본인 아이디어, 통과일까 탈락일까?</h2>
-      <p class="text-xs md:text-sm text-gray-400">ID 숫자 또는 키워드로 검색</p>
+  <!-- Hero search -->
+  <section class="bg-gradient-to-br from-brand-50 to-white border border-brand-100 rounded-2xl p-4 md:p-7 mb-4 md:mb-6 card-elev">
+    <div class="text-center mb-4">
+      <div class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-brand-600 bg-brand-50 border border-brand-100 px-2.5 py-1 rounded-full mb-2">🔮 AI 예측 실험</div>
+      <h2 class="text-xl md:text-3xl font-bold mb-1">본인 아이디어, 통과일까 탈락일까?</h2>
+      <p class="text-xs md:text-sm text-ink-400">ID 숫자 또는 제목 키워드로 검색하세요</p>
     </div>
     <div class="max-w-2xl mx-auto flex gap-2">
-      <input id="hero-search" type="text" placeholder="예: 13063 또는 AI 플랫폼" class="flex-1 min-w-0 bg-gray-900 border-2 border-gray-700 rounded-lg px-3 py-2 md:px-4 md:py-3 text-sm md:text-base focus:outline-none focus:border-emerald-500">
-      <button id="hero-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 md:px-5 rounded-lg text-sm md:text-base shrink-0">검색</button>
+      <input id="hero-search" type="text" placeholder="예: 13063 또는 AI 플랫폼" class="flex-1 min-w-0 bg-white border border-ink-200 rounded-xl px-4 py-3 text-sm md:text-base text-ink-900 placeholder:text-ink-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100">
+      <button id="hero-btn" class="bg-brand-500 hover:bg-brand-600 text-white font-bold px-5 md:px-6 rounded-xl text-sm md:text-base shrink-0 transition">검색</button>
     </div>
     <div id="hero-result" class="max-w-2xl mx-auto mt-3 text-sm"></div>
   </section>
 
-  <!-- Stats cards (compact on mobile: single row of 3) -->
+  <!-- Stats cards -->
   <section id="stats" class="grid grid-cols-3 md:grid-cols-5 gap-2 md:gap-3 mb-4 md:mb-6">
-    <div class="bg-gray-900 border border-gray-800 rounded-lg p-2 md:p-4">
-      <div class="text-[10px] md:text-xs text-gray-500">공개 풀</div>
+    <div class="bg-white border border-ink-200 rounded-xl p-3 md:p-4 card-elev">
+      <div class="text-[10px] md:text-xs text-ink-400">공개 풀</div>
       <div class="text-lg md:text-2xl font-bold mt-0.5 md:mt-1" id="stat-total">—</div>
     </div>
-    <div class="bg-gray-900 border border-gray-800 rounded-lg p-2 md:p-4">
-      <div class="text-[10px] md:text-xs text-gray-500">TECH</div>
-      <div class="text-lg md:text-2xl font-bold mt-0.5 md:mt-1" id="stat-tech">—</div>
+    <div class="bg-white border border-ink-200 rounded-xl p-3 md:p-4 card-elev">
+      <div class="text-[10px] md:text-xs text-ink-400">TECH</div>
+      <div class="text-lg md:text-2xl font-bold mt-0.5 md:mt-1 text-brand-500" id="stat-tech">—</div>
     </div>
-    <div class="bg-gray-900 border border-gray-800 rounded-lg p-2 md:p-4">
-      <div class="text-[10px] md:text-xs text-gray-500">LOCAL</div>
-      <div class="text-lg md:text-2xl font-bold mt-0.5 md:mt-1" id="stat-local">—</div>
+    <div class="bg-white border border-ink-200 rounded-xl p-3 md:p-4 card-elev">
+      <div class="text-[10px] md:text-xs text-ink-400">LOCAL</div>
+      <div class="text-lg md:text-2xl font-bold mt-0.5 md:mt-1 text-coral-500" id="stat-local">—</div>
     </div>
-    <div class="hidden md:block bg-gray-900 border border-gray-800 rounded-lg p-4">
-      <div class="text-xs text-gray-500">슬롯</div>
+    <div class="hidden md:block bg-white border border-ink-200 rounded-xl p-4 card-elev">
+      <div class="text-xs text-ink-400">슬롯</div>
       <div class="text-2xl font-bold mt-1">5,000</div>
-      <div class="text-[10px] text-gray-500 mt-0.5">TECH 4000 + LOCAL 1000</div>
+      <div class="text-[10px] text-ink-400 mt-0.5">TECH 4000 + LOCAL 1000</div>
     </div>
-    <div class="hidden md:block bg-gray-900 border border-gray-800 rounded-lg p-4">
-      <div class="text-xs text-gray-500">마감</div>
-      <div class="text-2xl font-bold mt-1 text-amber-400">5/15</div>
+    <div class="hidden md:block bg-white border border-ink-200 rounded-xl p-4 card-elev">
+      <div class="text-xs text-ink-400">마감</div>
+      <div class="text-2xl font-bold mt-1 text-coral-500">5/15</div>
     </div>
   </section>
 
   <!-- Methodology (collapsible) -->
-  <section class="bg-gray-900 border border-gray-800 rounded-lg mb-4 overflow-hidden">
-    <button onclick="toggleMethod()" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-800/50 transition">
+  <section class="bg-white border border-ink-200 rounded-xl mb-3 md:mb-4 overflow-hidden card-elev">
+    <button onclick="toggleMethod()" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-ink-100 transition">
       <div class="flex items-center gap-2">
-        <span class="text-emerald-400">📋</span>
+        <span class="text-brand-500">📋</span>
         <span class="font-semibold">심사 기준 · 통과 산출 방식</span>
       </div>
-      <span id="method-arrow" class="text-gray-500 transition-transform">▼</span>
+      <span id="method-arrow" class="text-ink-400 transition-transform">▼</span>
     </button>
-    <div id="method-body" class="hidden px-4 pb-4 pt-2 border-t border-gray-800 space-y-4 text-sm">
+    <div id="method-body" class="hidden px-4 pb-4 pt-2 border-t border-ink-200 space-y-4 text-sm">
 
       <div>
-        <h3 class="font-bold text-emerald-400 mb-2">🅰 LOCAL 부문 심사 기준 (모두의 창업 공식)</h3>
-        <p class="text-gray-400 text-xs mb-2">경영 전문가·현직 투자자로 구성된 책임멘토단이 다음 3축을 종합 평가:</p>
+        <h3 class="font-bold text-brand-600 mb-2">🅰 LOCAL 부문 심사 기준 (모두의 창업 공식)</h3>
+        <p class="text-ink-400 text-xs mb-2">경영 전문가·현직 투자자로 구성된 책임멘토단이 다음 3축을 종합 평가:</p>
         <div class="grid md:grid-cols-3 gap-2">
-          <div class="bg-gray-800 rounded p-3">
-            <div class="text-xs text-gray-500">s1</div>
+          <div class="bg-ink-100 rounded-lg p-3">
+            <div class="text-xs text-ink-400">s1</div>
             <div class="font-bold">차별성</div>
-            <div class="text-xs text-gray-400 mt-1">기존 서비스·제품과 무엇이 다른가?</div>
+            <div class="text-xs text-ink-500 mt-1">기존 서비스·제품과 무엇이 다른가?</div>
           </div>
-          <div class="bg-gray-800 rounded p-3 border border-emerald-800/50">
-            <div class="text-xs text-gray-500">s2 ★ 핵심</div>
+          <div class="bg-brand-50 rounded-lg p-3 border border-brand-100">
+            <div class="text-xs text-brand-600">s2 ★ 핵심</div>
             <div class="font-bold">지역가치</div>
-            <div class="text-xs text-gray-400 mt-1">지역 자원·특색을 어떻게 활용하는가?</div>
+            <div class="text-xs text-ink-500 mt-1">지역 자원·특색을 어떻게 활용하는가?</div>
           </div>
-          <div class="bg-gray-800 rounded p-3">
-            <div class="text-xs text-gray-500">s3</div>
+          <div class="bg-ink-100 rounded-lg p-3">
+            <div class="text-xs text-ink-400">s3</div>
             <div class="font-bold">성장 가능성</div>
-            <div class="text-xs text-gray-400 mt-1">지역에 뿌리 내리고 더 큰 시장으로 뻗을 수 있나?</div>
+            <div class="text-xs text-ink-500 mt-1">지역에 뿌리 내리고 더 큰 시장으로 뻗을 수 있나?</div>
           </div>
         </div>
       </div>
 
       <div>
-        <h3 class="font-bold text-amber-400 mb-2">🅱 TECH 부문 심사 기준 (정부 표준 추정)</h3>
-        <p class="text-gray-400 text-xs mb-2">공식 기준 미공개 → 한국 정부 창업지원사업(예비창업패키지·초기창업패키지·팁스) 표준 기준 추정 적용:</p>
+        <h3 class="font-bold text-coral-600 mb-2">🅱 TECH 부문 심사 기준 (정부 표준 추정)</h3>
+        <p class="text-ink-400 text-xs mb-2">공식 기준 미공개 → 한국 정부 창업지원사업(예비창업패키지·초기창업패키지·팁스) 표준 기준 추정 적용:</p>
         <div class="grid md:grid-cols-3 gap-2">
-          <div class="bg-gray-800 rounded p-3">
-            <div class="text-xs text-gray-500">s1</div>
+          <div class="bg-ink-100 rounded-lg p-3">
+            <div class="text-xs text-ink-400">s1</div>
             <div class="font-bold">차별성·혁신성</div>
-            <div class="text-xs text-gray-400 mt-1">기존 대비 기술 차별점 (단순 GPT wrapper는 감점)</div>
+            <div class="text-xs text-ink-500 mt-1">기존 대비 기술 차별점 (단순 GPT wrapper는 감점)</div>
           </div>
-          <div class="bg-gray-800 rounded p-3">
-            <div class="text-xs text-gray-500">s2</div>
+          <div class="bg-ink-100 rounded-lg p-3">
+            <div class="text-xs text-ink-400">s2</div>
             <div class="font-bold">사업성·시장성</div>
-            <div class="text-xs text-gray-400 mt-1">명확한 고객·수익모델·TAM이 있는가?</div>
+            <div class="text-xs text-ink-500 mt-1">명확한 고객·수익모델·TAM이 있는가?</div>
           </div>
-          <div class="bg-gray-800 rounded p-3">
-            <div class="text-xs text-gray-500">s3</div>
+          <div class="bg-ink-100 rounded-lg p-3">
+            <div class="text-xs text-ink-400">s3</div>
             <div class="font-bold">성장 가능성</div>
-            <div class="text-xs text-gray-400 mt-1">확장성·SaaS 단위경제·글로벌 잠재력</div>
+            <div class="text-xs text-ink-500 mt-1">확장성·SaaS 단위경제·글로벌 잠재력</div>
           </div>
         </div>
       </div>
 
       <div>
-        <h3 class="font-bold text-blue-400 mb-2">🎯 통과 예측 산출 방식</h3>
-        <ol class="list-decimal ml-5 space-y-1 text-gray-300">
-          <li><b>블라인딩</b>: 닉네임·좋아요·등록 시각·분야 태그 모두 제거. id + 한 줄 요약만 LLM에 노출. <span class="text-gray-500 text-xs">(검증: 좋아요-점수 상관 r ≈ 0.04, 거의 0)</span></li>
+        <h3 class="font-bold text-ink-900 mb-2">🎯 통과 예측 산출 방식</h3>
+        <ol class="list-decimal ml-5 space-y-1 text-ink-700">
+          <li><b>블라인딩</b>: 닉네임·좋아요·등록 시각·분야 태그 모두 제거. id + 한 줄 요약만 LLM에 노출. <span class="text-ink-400 text-xs">(검증: 좋아요-점수 상관 r ≈ 0.04, 거의 0)</span></li>
           <li><b>3축 스코어링</b>: 각 축 1-10 정수, 평균 5-6 캘리브레이션. 10개 LLM 서브에이전트 병렬 실행.</li>
           <li><b>합산 + 분야 내 순위</b>: total = s1+s2+s3 (3-30점). 분야(TECH/LOCAL) 내에서만 순위 매김.</li>
-          <li><b>시나리오 컷오프</b>: 분야별 가정한 통과율(예: TECH 50%) → 상위 N명을 통과 예측.
-            <ul class="list-disc ml-5 mt-1 text-gray-400 text-xs">
-              <li><b>낙관 (82% / 94%)</b>: 최종 ~6,000명 가정 (현재 추세)</li>
-              <li><b>중도 (50% / 60%)</b>: 최종 ~10,000명 가정</li>
-              <li><b>비관 (30% / 40%)</b>: 최종 ~16,000명 가정 (예비창업패키지 50:1 참고)</li>
+          <li><b>시나리오 컷오프</b>: 분야별 가정한 통과율 → 상위 N명을 통과 예측.
+            <ul class="list-disc ml-5 mt-1 text-ink-400 text-xs">
+              <li>낙관 (82% / 94%): 최종 ~6,000명 가정 (현재 추세)</li>
+              <li>중도 (50% / 60%): 최종 ~10,000명 가정</li>
+              <li>비관 (30% / 40%): 최종 ~16,000명 가정 (예비창업패키지 50:1 참고)</li>
             </ul>
           </li>
           <li><b>Lock</b>: 예측 파일 SHA256 해시 기록 → 발표 후 변경 불가능 증명.</li>
@@ -172,7 +214,7 @@
         </ol>
       </div>
 
-      <div class="bg-amber-950/30 border border-amber-900/50 rounded p-3 text-xs text-amber-200">
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-900">
         <b>⚠ 한계</b>: 한 줄 요약만 사용 (심사위원은 본문·팀·영상까지 봄). 단일 스코어링 패스. 비공개 풀(~37%) 보이지 않음. TECH 기준은 추정. 예측 천장이 본질적으로 낮음을 인지.
       </div>
 
@@ -180,54 +222,45 @@
   </section>
 
   <!-- Filters -->
-  <section class="bg-gray-900 border border-gray-800 rounded-lg p-3 md:p-4 mb-3 md:mb-4">
+  <section class="bg-white border border-ink-200 rounded-xl p-3 md:p-4 mb-3 md:mb-4 card-elev">
     <div class="flex flex-wrap gap-3 md:gap-4">
-      <!-- Division -->
       <div>
-        <div class="text-xs text-gray-500 mb-1">분야</div>
-        <div class="inline-flex rounded-md overflow-hidden border border-gray-700">
-          <button class="div-btn px-4 py-1.5 text-sm bg-emerald-700 text-white" data-div="TECH">TECH</button>
-          <button class="div-btn px-4 py-1.5 text-sm bg-gray-800 text-gray-300 hover:bg-gray-700" data-div="LOCAL">LOCAL</button>
+        <div class="text-xs text-ink-400 mb-1">분야</div>
+        <div class="inline-flex rounded-lg overflow-hidden border border-ink-200">
+          <button class="div-btn px-4 py-1.5 text-sm bg-brand-500 text-white" data-div="TECH">TECH</button>
+          <button class="div-btn px-4 py-1.5 text-sm bg-white text-ink-700 hover:bg-ink-100" data-div="LOCAL">LOCAL</button>
         </div>
       </div>
-
-      <!-- Scenario -->
       <div>
-        <div class="text-xs text-gray-500 mb-1">통과율 시나리오</div>
-        <div class="inline-flex rounded-md overflow-hidden border border-gray-700">
-          <button class="sc-btn px-3 py-1.5 text-sm bg-gray-800 hover:bg-gray-700" data-sc="opt">낙관</button>
-          <button class="sc-btn px-3 py-1.5 text-sm bg-emerald-700 text-white" data-sc="mid">중도</button>
-          <button class="sc-btn px-3 py-1.5 text-sm bg-gray-800 hover:bg-gray-700" data-sc="pes">비관</button>
+        <div class="text-xs text-ink-400 mb-1">통과율 시나리오</div>
+        <div class="inline-flex rounded-lg overflow-hidden border border-ink-200">
+          <button class="sc-btn px-3 py-1.5 text-sm bg-white text-ink-700 hover:bg-ink-100" data-sc="opt">낙관</button>
+          <button class="sc-btn px-3 py-1.5 text-sm bg-brand-500 text-white" data-sc="mid">중도</button>
+          <button class="sc-btn px-3 py-1.5 text-sm bg-white text-ink-700 hover:bg-ink-100" data-sc="pes">비관</button>
         </div>
-        <div class="text-[10px] text-gray-500 mt-1" id="sc-desc"></div>
+        <div class="text-[10px] text-ink-400 mt-1" id="sc-desc"></div>
       </div>
-
-      <!-- Pred filter -->
       <div>
-        <div class="text-xs text-gray-500 mb-1">예측</div>
-        <div class="inline-flex rounded-md overflow-hidden border border-gray-700">
-          <button class="pf-btn px-3 py-1.5 text-sm bg-emerald-700 text-white" data-pf="all">전체</button>
-          <button class="pf-btn px-3 py-1.5 text-sm bg-gray-800 hover:bg-gray-700" data-pf="pass">통과</button>
-          <button class="pf-btn px-3 py-1.5 text-sm bg-gray-800 hover:bg-gray-700" data-pf="fail">탈락</button>
+        <div class="text-xs text-ink-400 mb-1">예측</div>
+        <div class="inline-flex rounded-lg overflow-hidden border border-ink-200">
+          <button class="pf-btn px-3 py-1.5 text-sm bg-brand-500 text-white" data-pf="all">전체</button>
+          <button class="pf-btn px-3 py-1.5 text-sm bg-white text-ink-700 hover:bg-ink-100" data-pf="pass">통과</button>
+          <button class="pf-btn px-3 py-1.5 text-sm bg-white text-ink-700 hover:bg-ink-100" data-pf="fail">탈락</button>
         </div>
       </div>
-
-      <!-- Search -->
       <div class="flex-1 min-w-[200px]">
-        <div class="text-xs text-gray-500 mb-1">검색 (아이디어 본문)</div>
-        <input id="search" type="text" placeholder="키워드 입력..." class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
+        <div class="text-xs text-ink-400 mb-1">검색</div>
+        <input id="search" type="text" placeholder="키워드..." class="w-full bg-white border border-ink-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-brand-500">
       </div>
     </div>
   </section>
 
-  <!-- Result summary -->
-  <div class="text-sm text-gray-400 mb-3" id="result-summary">로딩 중...</div>
+  <div class="text-sm text-ink-500 mb-3" id="result-summary">로딩 중...</div>
 
-  <!-- Table -->
-  <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+  <div class="bg-white border border-ink-200 rounded-xl overflow-hidden card-elev">
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
-        <thead class="bg-gray-800/50 text-gray-400 text-[10px] md:text-xs uppercase">
+        <thead class="bg-ink-100 text-ink-400 text-[10px] md:text-xs uppercase">
           <tr>
             <th class="text-left px-2 md:px-3 py-2 w-14">순위</th>
             <th class="text-left px-2 md:px-3 py-2 w-12">점수</th>
@@ -239,48 +272,48 @@
         <tbody id="tbody"></tbody>
       </table>
     </div>
-    <div class="border-t border-gray-800 px-4 py-3 flex flex-col items-center gap-2">
+    <div class="border-t border-ink-200 px-4 py-3 flex flex-col items-center gap-2">
       <div class="flex items-center justify-center gap-1 flex-wrap" id="pagination"></div>
-      <div class="text-xs text-gray-500" id="page-info">—</div>
+      <div class="text-xs text-ink-400" id="page-info">—</div>
     </div>
   </div>
 
-  <footer class="mt-8 text-xs text-gray-500 text-center space-y-1">
+  <footer class="mt-8 text-xs text-ink-400 text-center space-y-1">
     <div>v1 lock: <span id="locked-at" class="font-mono"></span> · SHA256: <span id="sha256" class="font-mono"></span></div>
     <div>블라인딩 검증: 좋아요-점수 상관계수 TECH 0.036 / LOCAL 0.049</div>
     <div>스코어링: 10개 LLM 서브에이전트 병렬 · 분야별 3축 1-10점 · 발표 후 정확도 측정 예정</div>
-    <div class="text-gray-600 mt-2">⚠️ 한 줄 요약만 사용. 실제 심사위원은 본문·팀·영상까지 봄. 예측 천장이 낮음을 인지.</div>
+    <div class="text-ink-300 mt-2">⚠️ 한 줄 요약만 사용. 실제 심사위원은 본문·팀·영상까지 봄. 예측 천장이 낮음을 인지.</div>
   </footer>
 
 </main>
 
 <!-- Modal -->
-<div id="modal" class="fixed inset-0 bg-black/70 z-20 hidden items-center justify-center p-4">
-  <div class="bg-gray-900 border border-gray-700 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+<div id="modal" class="fixed inset-0 bg-ink-900/50 z-20 hidden items-center justify-center p-4">
+  <div class="bg-white border border-ink-200 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl">
     <div class="p-5">
       <div class="flex items-start justify-between gap-4 mb-3">
         <div>
-          <div class="text-xs text-gray-500" id="m-id"></div>
-          <div class="text-lg font-bold mt-1" id="m-su"></div>
+          <div class="text-xs text-ink-400" id="m-id"></div>
+          <div class="text-lg font-bold mt-1 text-ink-900" id="m-su"></div>
         </div>
-        <button onclick="document.getElementById('modal').classList.add('hidden')" class="text-gray-500 hover:text-white text-xl">×</button>
+        <button onclick="document.getElementById('modal').classList.add('hidden')" class="text-ink-400 hover:text-ink-900 text-2xl leading-none">×</button>
       </div>
       <div class="grid grid-cols-3 gap-3 mb-4">
-        <div class="bg-gray-800 rounded p-3"><div class="text-[10px] text-gray-500">차별성/혁신성</div><div class="text-2xl font-bold mt-1" id="m-s1"></div></div>
-        <div class="bg-gray-800 rounded p-3"><div class="text-[10px] text-gray-500" id="m-s2-label"></div><div class="text-2xl font-bold mt-1" id="m-s2"></div></div>
-        <div class="bg-gray-800 rounded p-3"><div class="text-[10px] text-gray-500">성장 가능성</div><div class="text-2xl font-bold mt-1" id="m-s3"></div></div>
+        <div class="bg-ink-100 rounded-lg p-3"><div class="text-[10px] text-ink-400">차별성/혁신성</div><div class="text-2xl font-bold mt-1 text-brand-500" id="m-s1"></div></div>
+        <div class="bg-ink-100 rounded-lg p-3"><div class="text-[10px] text-ink-400" id="m-s2-label"></div><div class="text-2xl font-bold mt-1 text-brand-500" id="m-s2"></div></div>
+        <div class="bg-ink-100 rounded-lg p-3"><div class="text-[10px] text-ink-400">성장 가능성</div><div class="text-2xl font-bold mt-1 text-brand-500" id="m-s3"></div></div>
       </div>
-      <div class="text-xs text-gray-500 mb-1">총점 / 순위</div>
+      <div class="text-xs text-ink-400 mb-1">총점 / 순위</div>
       <div class="text-base font-bold mb-3" id="m-total"></div>
-      <div class="text-xs text-gray-500 mb-1">스코어링 근거 (LLM)</div>
-      <div class="text-sm bg-gray-800 rounded p-3 mb-3" id="m-rt"></div>
-      <div class="text-xs text-gray-500 mb-1">시나리오별 예측</div>
+      <div class="text-xs text-ink-400 mb-1">스코어링 근거 (LLM)</div>
+      <div class="text-sm bg-ink-100 rounded-lg p-3 mb-3" id="m-rt"></div>
+      <div class="text-xs text-ink-400 mb-1">시나리오별 예측</div>
       <div id="m-preds" class="text-sm space-y-1 mb-4"></div>
-      <div class="flex gap-2 pt-3 border-t border-gray-800">
-        <button onclick="copyShare()" class="flex-1 bg-emerald-700 hover:bg-emerald-600 text-white text-sm font-bold py-2 rounded">📋 결과 공유 텍스트 복사</button>
-        <a id="m-tweet" target="_blank" class="bg-gray-800 hover:bg-gray-700 text-sm py-2 px-4 rounded text-center">𝕏 트윗</a>
+      <div class="flex gap-2 pt-3 border-t border-ink-200">
+        <button onclick="copyShare()" class="flex-1 bg-brand-500 hover:bg-brand-600 text-white text-sm font-bold py-2 rounded-lg">📋 결과 공유 텍스트 복사</button>
+        <a id="m-tweet" target="_blank" class="bg-ink-100 hover:bg-ink-200 text-sm py-2 px-4 rounded-lg text-center text-ink-900">𝕏 트윗</a>
       </div>
-      <div id="m-copied" class="text-xs text-emerald-400 mt-2 hidden text-center">복사 완료</div>
+      <div id="m-copied" class="text-xs text-brand-500 mt-2 hidden text-center">복사 완료</div>
     </div>
   </div>
 </div>
@@ -315,26 +348,24 @@ function heroSearch() {
   const q = document.getElementById('hero-search').value.trim();
   if (!q) return;
   const result = document.getElementById('hero-result');
-  // ID lookup first
   if (/^\d+$/.test(q)) {
     const found = DATA.rows.find(r => r.id === parseInt(q));
     if (found) {
-      result.innerHTML = `<div class="bg-gray-900 border border-emerald-700 rounded p-3 cursor-pointer" onclick='showModal(${found.id})'>
-        <div class="text-xs text-gray-500">#${found.id} · ${found.d}</div>
-        <div class="text-white mt-1">${escapeHtml(found.su.slice(0, 120))}${found.su.length > 120 ? '…' : ''}</div>
-        <div class="text-xs text-emerald-400 mt-2">총점 ${found.t}/30 · ${found.rk}위/${found.n} · 클릭하여 상세보기</div>
+      result.innerHTML = `<div class="bg-white border border-brand-500 rounded-xl p-3 cursor-pointer hover:bg-brand-50 transition" onclick='showModal(${found.id})'>
+        <div class="text-xs text-ink-400">#${found.id} · ${found.d}</div>
+        <div class="text-ink-900 mt-1">${escapeHtml(found.su.slice(0, 120))}${found.su.length > 120 ? '…' : ''}</div>
+        <div class="text-xs text-brand-500 mt-2">총점 ${found.t}/30 · ${found.rk}위/${found.n} · 클릭하여 상세보기</div>
       </div>`;
       return;
     }
-    result.innerHTML = `<div class="text-red-400 text-center">ID ${q} 를 찾을 수 없습니다</div>`;
+    result.innerHTML = `<div class="text-coral-500 text-center">ID ${q} 를 찾을 수 없습니다</div>`;
     return;
   }
-  // Keyword: filter table view
   state.q = q;
   state.page = 1;
   document.getElementById('search').value = q;
   render();
-  result.innerHTML = `<div class="text-gray-400 text-center">키워드 "${escapeHtml(q)}"로 아래 표 필터링됨</div>`;
+  result.innerHTML = `<div class="text-ink-500 text-center">키워드 "${escapeHtml(q)}"로 아래 표 필터링됨</div>`;
   document.querySelector('#result-summary').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
@@ -389,10 +420,10 @@ function render() {
   const failN = total - passN;
 
   const summary = `
-    <span class="text-white font-semibold">${total.toLocaleString()}</span>개 표시 ·
-    <span class="text-emerald-400">${passN.toLocaleString()} 통과</span> ·
-    <span class="text-red-400">${failN.toLocaleString()} 탈락</span>
-    <span class="text-gray-600 ml-2">(${state.div} ${(getPassRate() * 100).toFixed(0)}% 통과율 가정)</span>
+    <span class="text-ink-900 font-semibold">${total.toLocaleString()}</span>개 ·
+    <span class="text-emerald-600 font-semibold">${passN.toLocaleString()} 통과</span> ·
+    <span class="text-coral-500 font-semibold">${failN.toLocaleString()} 탈락</span>
+    <span class="text-ink-300 ml-2">(${state.div} ${(getPassRate() * 100).toFixed(0)}% 통과율 가정)</span>
   `;
   document.getElementById('result-summary').innerHTML = summary;
 
@@ -403,29 +434,28 @@ function render() {
   tbody.innerHTML = pageRows.map(r => {
     const pred = predForRow(r);
     const badge = pred === 'PASS'
-      ? `<span class="badge-pass text-xs px-2 py-0.5 rounded font-bold">통과</span>`
-      : `<span class="badge-fail text-xs px-2 py-0.5 rounded font-bold">탈락</span>`;
+      ? `<span class="badge-pass text-[10px] md:text-xs px-2 py-0.5 rounded font-bold">통과</span>`
+      : `<span class="badge-fail text-[10px] md:text-xs px-2 py-0.5 rounded font-bold">탈락</span>`;
     const scoresVis = r.s.map(v => {
       const w = (v / 10) * 100;
       return `<div class="score-bar"><div class="score-fill" style="width:${w}%"></div></div>`;
     }).join('');
     return `
-      <tr class="row-hover border-t border-gray-800 cursor-pointer" onclick='showModal(${r.id})'>
-        <td class="px-2 md:px-3 py-2 text-gray-400 font-mono text-[10px] md:text-xs">${r.rk}/${r.n}</td>
+      <tr class="row-hover border-t border-ink-200 cursor-pointer" onclick='showModal(${r.id})'>
+        <td class="px-2 md:px-3 py-2 text-ink-400 font-mono text-[10px] md:text-xs">${r.rk}/${r.n}</td>
         <td class="px-2 md:px-3 py-2 font-bold text-sm md:text-base">${r.t}</td>
         <td class="hidden md:table-cell px-3 py-2">
-          <div class="flex gap-1 items-center text-[10px] text-gray-500">
+          <div class="flex gap-1 items-center text-[10px] text-ink-400">
             <span>${r.s[0]}</span><span>${r.s[1]}</span><span>${r.s[2]}</span>
           </div>
           <div class="space-y-0.5 mt-1">${scoresVis}</div>
         </td>
-        <td class="px-2 md:px-3 py-2 text-gray-300 text-xs md:text-sm">${escapeHtml(r.su.slice(0, 100))}${r.su.length > 100 ? '…' : ''}</td>
+        <td class="px-2 md:px-3 py-2 text-ink-700 text-xs md:text-sm">${escapeHtml(r.su.slice(0, 100))}${r.su.length > 100 ? '…' : ''}</td>
         <td class="px-2 md:px-3 py-2 text-center">${badge}</td>
       </tr>
     `;
   }).join('');
 
-  // Pagination
   const totalPages = Math.max(1, Math.ceil(total / state.perPage));
   if (state.page > totalPages) state.page = totalPages;
   document.getElementById('page-info').textContent = `${start + 1}-${Math.min(start + state.perPage, total)} / ${total.toLocaleString()}`;
@@ -436,7 +466,7 @@ function renderPagination(totalPages) {
   const c = document.getElementById('pagination');
   const pages = [];
   const cur = state.page;
-  const add = (p, label) => pages.push(`<button class="px-2 py-1 text-xs rounded ${p === cur ? 'bg-emerald-700 text-white' : 'bg-gray-800 hover:bg-gray-700 text-gray-400'}" onclick="goPage(${p})">${label || p}</button>`);
+  const add = (p, label) => pages.push(`<button class="px-2.5 py-1 text-xs rounded-md ${p === cur ? 'bg-brand-500 text-white' : 'bg-white border border-ink-200 hover:bg-ink-100 text-ink-700'}" onclick="goPage(${p})">${label || p}</button>`);
   add(1, '«');
   add(Math.max(1, cur - 1), '‹');
   const start = Math.max(1, cur - 2);
@@ -449,13 +479,6 @@ function renderPagination(totalPages) {
 
 function goPage(p) { state.page = p; render(); window.scrollTo({top: document.querySelector('#result-summary').offsetTop - 80, behavior:'smooth'}); }
 
-function toggleMethod() {
-  const body = document.getElementById('method-body');
-  const arrow = document.getElementById('method-arrow');
-  const hidden = body.classList.toggle('hidden');
-  arrow.style.transform = hidden ? '' : 'rotate(180deg)';
-}
-
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
@@ -465,11 +488,17 @@ function updateScDesc() {
   document.getElementById('sc-desc').textContent = sc.desc;
 }
 
+function toggleMethod() {
+  const body = document.getElementById('method-body');
+  const arrow = document.getElementById('method-arrow');
+  const hidden = body.classList.toggle('hidden');
+  arrow.style.transform = hidden ? '' : 'rotate(180deg)';
+}
+
 function showModal(id) {
   const r = DATA.rows.find(x => x.id === id);
   if (!r) return;
   CURRENT_MODAL = r;
-  // Pre-build tweet link
   const sc = DATA.scenarios.find(x => x.id === state.sc);
   const pr = r.d === 'TECH' ? sc.tech_pr : sc.local_pr;
   const cut = Math.round(r.n * pr);
@@ -488,8 +517,8 @@ function showModal(id) {
   const preds = DATA.scenarios.map(sc => {
     const pr = r.d === 'TECH' ? sc.tech_pr : sc.local_pr;
     const cut = Math.round(r.n * pr);
-    const pred = r.rk <= cut ? '<span class="text-emerald-400 font-bold">통과</span>' : '<span class="text-red-400 font-bold">탈락</span>';
-    return `<div class="flex justify-between bg-gray-800 rounded px-3 py-1.5"><span class="text-gray-400">${sc.name}</span>${pred}</div>`;
+    const pred = r.rk <= cut ? '<span class="text-emerald-600 font-bold">통과</span>' : '<span class="text-coral-500 font-bold">탈락</span>';
+    return `<div class="flex justify-between bg-ink-100 rounded-lg px-3 py-1.5"><span class="text-ink-500">${sc.name}</span>${pred}</div>`;
   }).join('');
   document.getElementById('m-preds').innerHTML = preds;
   const modal = document.getElementById('modal');
@@ -503,20 +532,20 @@ document.getElementById('modal').addEventListener('click', e => {
 
 document.querySelectorAll('.div-btn').forEach(b => b.onclick = () => {
   state.div = b.dataset.div; state.page = 1;
-  document.querySelectorAll('.div-btn').forEach(x => { x.classList.remove('bg-emerald-700', 'text-white'); x.classList.add('bg-gray-800', 'text-gray-300'); });
-  b.classList.add('bg-emerald-700', 'text-white'); b.classList.remove('bg-gray-800', 'text-gray-300');
+  document.querySelectorAll('.div-btn').forEach(x => { x.classList.remove('bg-brand-500', 'text-white'); x.classList.add('bg-white', 'text-ink-700'); });
+  b.classList.add('bg-brand-500', 'text-white'); b.classList.remove('bg-white', 'text-ink-700');
   render();
 });
 document.querySelectorAll('.sc-btn').forEach(b => b.onclick = () => {
   state.sc = b.dataset.sc; state.page = 1;
-  document.querySelectorAll('.sc-btn').forEach(x => { x.classList.remove('bg-emerald-700', 'text-white'); x.classList.add('bg-gray-800'); });
-  b.classList.add('bg-emerald-700', 'text-white'); b.classList.remove('bg-gray-800');
+  document.querySelectorAll('.sc-btn').forEach(x => { x.classList.remove('bg-brand-500', 'text-white'); x.classList.add('bg-white', 'text-ink-700'); });
+  b.classList.add('bg-brand-500', 'text-white'); b.classList.remove('bg-white', 'text-ink-700');
   updateScDesc(); render();
 });
 document.querySelectorAll('.pf-btn').forEach(b => b.onclick = () => {
   state.pf = b.dataset.pf; state.page = 1;
-  document.querySelectorAll('.pf-btn').forEach(x => { x.classList.remove('bg-emerald-700', 'text-white'); x.classList.add('bg-gray-800'); });
-  b.classList.add('bg-emerald-700', 'text-white'); b.classList.remove('bg-gray-800');
+  document.querySelectorAll('.pf-btn').forEach(x => { x.classList.remove('bg-brand-500', 'text-white'); x.classList.add('bg-white', 'text-ink-700'); });
+  b.classList.add('bg-brand-500', 'text-white'); b.classList.remove('bg-white', 'text-ink-700');
   render();
 });
 document.getElementById('search').addEventListener('input', e => { state.q = e.target.value; state.page = 1; render(); });
