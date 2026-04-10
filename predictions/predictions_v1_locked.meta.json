@@ -1,11 +1,11 @@
 {
   "version": "v1",
-  "locked_at": "2026-04-09T11:21:42.129785",
+  "locked_at": "2026-04-10T18:06:51.295025",
   "data_snapshot": "modoo_ideas_20260409_1105.csv",
-  "total_scored": 3797,
-  "tech_n": 3119,
-  "local_n": 678,
-  "sha256": "4e4882b639f4390a5b13ca3b0a11d708a64ae6d061e0cac8ded1ea4c3af0c6a9",
+  "total_scored": 4309,
+  "tech_n": 3556,
+  "local_n": 753,
+  "sha256": "11e5608215b551c6ab0a6527fb65e5a9162ba1813b3cd43cfd403527527fede0",
   "scoring_method": "5 dimensions per rubric (LOCAL: 차별성/지역가치/성장가능성, TECH: 차별성/사업성/성장가능성), each 1-10, 1 pass, 10 general-purpose subagents in parallel",
   "blinding": "Nicknames, like counts, division tags removed from input. Confirmed by like-score correlation: TECH r=0.036, LOCAL r=0.049",
   "cutoff_scenarios": [
